@@ -36,3 +36,10 @@ def test_get_id_facutra(xml_root, expected_id):
     assert get_id_factura(xml_root) == expected_id
 
 
+@pt.mark.parametrize(
+    "xml_root,expected_fecha", [(root, fecha) for root, fecha in zip(roots, fechas)]
+)
+def test_get_fecha_factura(xml_root, expected_fecha):
+    assert get_fecha_factura(xml_root) == expected_fecha
+
+
