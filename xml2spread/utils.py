@@ -23,3 +23,23 @@ def get_fecha_factura(root: ET.Element) -> str:
     return factura_fecha
 
 
+def get_item_factura(root: ET.Element) -> List[List]:
+    items: List[List] = []
+    invoice_lines = root.findall("cac:InvoiceLine", namespaces=namespaces)
+
+    for line in invoice_lines:
+        cantidad = int(
+            float(str(line.findtext("cbc:InvoicedQuantity", namespaces=namespaces)))
+        )
+
+        item = line.find("cac:Item", namespaces=namespaces)
+
+        if item is not None:
+            descripcion = item.findtext("cbc:Description", namespaces=namespaces)
+            items.append([descripcion, cantidad])
+
+    return items
+
+
+if __name__ == "__main__":
+    pass

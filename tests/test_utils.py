@@ -43,3 +43,31 @@ def test_get_fecha_factura(xml_root, expected_fecha):
     assert get_fecha_factura(xml_root) == expected_fecha
 
 
+def test_get_one_item_factura():
+    output = get_item_factura(roots[-1])
+    expected_item = [["TUBO INOX 101.6X1.5X6000MM C-304 BRILLANTE", 6]]
+
+    assert output == expected_item
+
+
+# @pt.mark.skip
+def test_get_two_item_factura():
+    output = get_item_factura(roots[4])
+    expected_item = [
+        ["TUBO INOX 50.8X1.5X6000MM C-304 BRILLANTE", 60],
+        ["TUBO INOX 38.1X1.5X6000MM C-304 BRILLANTE", 50],
+    ]
+
+    assert output == expected_item
+
+
+# @pt.mark.skip
+def test_get_three_item_factura():
+    output = get_item_factura(roots[6])
+    expected_item = [
+        ["TUBO INOX 50.8X1.5X6000MM C-304 BRILLANTE", 2],
+        ["TUBO INOX 15.9X1.56X6000MM C-304 BRILLANTE", 10],
+        ["TUBO INOX 15.9X1.5X6000MM C-3904 BRILLANTE", 1],
+    ]
+
+    assert output == expected_item
