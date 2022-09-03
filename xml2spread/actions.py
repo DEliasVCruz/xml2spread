@@ -39,3 +39,10 @@ def select_action():
         ROOT_WIN.destroy()
 
 
+def on_closing_action():
+    if askokcancel("Salir", "Quieres salir?"):
+        ROOT_WIN.destroy()
+
+
+if __name__ == "__main__":
+    pass
