@@ -36,5 +36,37 @@ def extract_and_write(files, result_file: tuple[str] | str):
                     csv_writer.writerow(item)
 
 
+def selector(action: str, file_type: str, retry: bool) -> tuple[tuple[str] | str, bool]:
+
+    if action == "open":
+        selection = askopenfilenames(
+            title=f"Seleccione los archivos {file_type}",
+            filetypes=(
+                (f"Archivos {file_type}", f"*.{file_type}"),
+                ("Todos los archivos", "*.*"),
+            ),
+        )
+    else:
+        selection = asksaveasfilename(
+            confirmoverwrite=True,
+            defaultextension=file_type,
+            filetypes=(
+                (f"Archivos {file_type}", f"*.{file_type}"),
+                ("Todos los archivos", "*.*"),
+            ),
+            title="Seleccione archivo a guardar",
+        )
+
+    if selection:
+        retry = False
+    else:
+        retry = askretrycancel(
+            title="Problema seleccion archivos",
+            message="No se ha seleccionado un archivo, quiere volver a seleccionar?",
+        )
+
+    return (selection, retry)
+
+
 if __name__ == "__main__":
     pass
