@@ -29,3 +29,10 @@ for file in Path().cwd().joinpath("tests", "fixtures", "xml_facturas").iterdir()
     roots.append(root)
 
 
+@pt.mark.parametrize(
+    "xml_root,expected_id", [(root, id) for root, id in zip(roots, ids)]
+)
+def test_get_id_facutra(xml_root, expected_id):
+    assert get_id_factura(xml_root) == expected_id
+
+

@@ -8,3 +8,9 @@ namespaces = {
 }
 
 
+def get_id_factura(root: ET.Element) -> str:
+    factura_id = root.findtext("cbc:ID", namespaces=namespaces)
+
+    return str(factura_id)
+
+
