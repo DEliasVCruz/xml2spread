@@ -38,14 +38,19 @@ def extract_and_write(files, result_files_name: tuple[str] | str):
             for item in items:
                 item.extend([id, fecha])
 
-        with open(str(f"{result_files_name}_detalle"), mode="w") as file:
+        file = Path(str(result_files_name))
+        file = file.parent / file.stem
+        detalle_file = f"{str(file)}_detalle.csv"
+        ammount_file = f"{str(file)}_montos.csv"
+
+        with open(detalle_file, mode="w") as file:
             csv_writer = csv.writer(file, delimiter=",")
 
             csv_writer.writerow(["Descripcion", "Cantidad", "Factura", "Fecha"])
             for item in items:
                 csv_writer.writerow(item)
 
-        with open(str(f"{result_files_name}_montos"), mode="w") as file:
+        with open(ammount_file, mode="w") as file:
             csv_writer = csv.writer(file, delimiter=",")
 
             csv_writer.writerow(["Factura", "Fecha", "Cliente", "Base Imponible", "IGV", "Total"])
