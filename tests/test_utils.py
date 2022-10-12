@@ -29,6 +29,7 @@ for file in Path().cwd().joinpath("tests", "fixtures", "xml_facturas").iterdir()
     roots.append(root)
 
 
+# @pt.mark.skip
 @pt.mark.parametrize(
     "xml_root,expected_id", [(root, id) for root, id in zip(roots, ids)]
 )
@@ -36,6 +37,7 @@ def test_get_id_facutra(xml_root, expected_id):
     assert get_id_factura(xml_root) == expected_id
 
 
+# @pt.mark.skip
 @pt.mark.parametrize(
     "xml_root,expected_fecha", [(root, fecha) for root, fecha in zip(roots, fechas)]
 )
@@ -43,6 +45,7 @@ def test_get_fecha_factura(xml_root, expected_fecha):
     assert get_fecha_factura(xml_root) == expected_fecha
 
 
+# @pt.mark.skip
 def test_get_one_item_factura():
     output = get_item_factura(roots[-1])
     expected_item = [["TUBO INOX 101.6X1.5X6000MM C-304 BRILLANTE", 6]]
