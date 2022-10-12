@@ -9,7 +9,7 @@ from zipfile import ZipFile
 from xml2spread.utils import get_fecha_factura, get_id_factura, get_item_factura
 
 
-def extract_and_write(files, result_file: tuple[str] | str):
+def extract_and_write(files, result_files_name: tuple[str] | str):
 
     with TemporaryDirectory() as tmpdirname:
 
@@ -21,7 +21,7 @@ def extract_and_write(files, result_file: tuple[str] | str):
 
         temp_files_dir = Path(tmpdirname)
 
-        with open(str(result_file), mode="w") as file:
+        with open(str(result_files_name), mode="w") as file:
             csv_writer = csv.writer(file, delimiter=",")
 
             csv_writer.writerow(["Descripcion", "Cantidad", "Factura", "Fecha"])
@@ -54,7 +54,7 @@ def selector(action: str, file_type: str, retry: bool) -> tuple[tuple[str] | str
                 (f"Archivos {file_type}", f"*.{file_type}"),
                 ("Todos los archivos", "*.*"),
             ),
-            title="Seleccione archivo a guardar",
+            title="Seleccione nombre para archivos a guardar",
         )
 
     if selection:

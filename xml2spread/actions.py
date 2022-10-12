@@ -6,7 +6,7 @@ from xml2spread.procedures import extract_and_write, selector
 
 def select_action():
     zip_files = ""
-    result_file = ""
+    result_files_name = ""
 
     retry = True
     while retry:
@@ -17,19 +17,19 @@ def select_action():
 
     retry = True
     while retry:
-        result_file, retry = selector("save", "csv", retry)
+        result_files_name, retry = selector("save", "csv", retry)
 
-    if not result_file:
+    if not result_files_name:
         return
 
-    extract_and_write(zip_files, result_file)
+    extract_and_write(zip_files, result_files_name)
 
     DIRECTORY_FILES.set("\n".join(zip_files))
-    RESULT_FILES.set(str(result_file))
+    RESULT_FILES.set(str(result_files_name))
 
     showinfo(
         title="Archivos procesados",
-        message=f"Se guardaron los resultados en {result_file}",
+        message=f"Se guardaron los resultados en {result_files_name}",
     )
 
     continuing = askyesno(
