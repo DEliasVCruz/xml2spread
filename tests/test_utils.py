@@ -9,6 +9,7 @@ from xml2spread.utils import (
     get_fecha_factura,
     get_id_factura,
     get_item_factura,
+    get_client_name
 )
 
 fc_roots = []
@@ -29,6 +30,7 @@ fechas = [
 ]
 
 ammount_values = [(35.61, 6.41, 42.02), (5796.61, 1043.39, 6840.00), (4766.10, 857.9, 5624.00)]
+client_names = ["TRINY RENTAL SOCIEDAD ANONIMA CERRADA", "INVERSION INOX GASPAR E.I.R.L.", "COMERCIALIZADORA & INVERSIONES CONDOR  S.A.C."]
 
 for file in Path().cwd().joinpath("tests", "fixtures", "xml_facturas").iterdir():
     root = ET.parse(file).getroot()
@@ -96,3 +98,13 @@ def test_get_three_item_factura():
 def test_get_tax_info(xml_root, expected_ammounts):
     output = get_tax_info(xml_root)
     assert output == expected_ammounts
+
+
+# @pt.mark.skip
+@pt.mark.parametrize(
+    "xml_root,expected_names",
+    [(root, name) for root, name in zip(mnt_roots, client_names)],
+)
+def test_get_client_name(xml_root, expected_names):
+    output = get_client_name(xml_root)
+    assert output == expected_names
