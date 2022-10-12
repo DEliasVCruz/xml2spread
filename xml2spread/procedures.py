@@ -13,6 +13,9 @@ def extract_and_write(files, result_files_name: tuple[str] | str):
 
     with TemporaryDirectory() as tmpdirname:
 
+        items = []
+        facturas_monto = []
+
         for file in files:
             with ZipFile(file, mode="r") as archive:
                 for member_file in archive.namelist():
@@ -21,19 +24,25 @@ def extract_and_write(files, result_files_name: tuple[str] | str):
 
         temp_files_dir = Path(tmpdirname)
 
-        with open(str(result_files_name), mode="w") as file:
+        for file in temp_files_dir.iterdir():
+            root = ET.parse(file).getroot()
+            id = get_id_factura(root)
+            fecha = get_fecha_factura(root)
+            items = get_item_factura(root)
+
+            factura_monto: list[float | str | list] = [id, fecha, get_client_name(root)]
+            factura_monto.extend(list(get_tax_info(root)))
+
+            facturas_monto.append(factura_monto)
+
+            for item in items:
+                item.extend([id, fecha])
+
+        with open(str(f"{result_files_name}_detalle"), mode="w") as file:
             csv_writer = csv.writer(file, delimiter=",")
 
             csv_writer.writerow(["Descripcion", "Cantidad", "Factura", "Fecha"])
 
-            for file in temp_files_dir.iterdir():
-                root = ET.parse(file).getroot()
-                id = get_id_factura(root)
-                fecha = get_fecha_factura(root)
-                items = get_item_factura(root)
-                for item in items:
-                    item.extend([id, fecha])
-                    csv_writer.writerow(item)
 
 
 def selector(action: str, file_type: str, retry: bool) -> tuple[tuple[str] | str, bool]:
