@@ -52,5 +52,14 @@ def get_tax_info(root: ET.Element) -> Tuple[float, float, float]:
     return (base_imponible or 0, igv or 0, round(number=total, ndigits=2))
 
 
+def get_client_name(root: ET.Element) -> str:
+    customer = root.find("cac:AccountingCustomerParty", namespaces=namespaces)
+    party = customer.find("cac:Party", namespaces=namespaces) if customer is not None else None
+    entity = party.find("cac:PartyLegalEntity", namespaces=namespaces) if party is not None else None
+    name = entity.findtext("cbc:RegistrationName", namespaces=namespaces) if entity is not None else None
+
+    return (name or "")
+
+
 if __name__ == "__main__":
     pass
