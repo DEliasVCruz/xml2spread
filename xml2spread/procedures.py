@@ -6,7 +6,7 @@ from tkinter.filedialog import askopenfilenames, asksaveasfilename
 from tkinter.messagebox import askretrycancel
 from zipfile import ZipFile
 
-from xml2spread.utils import get_fecha_factura, get_id_factura, get_item_factura
+from xml2spread.utils import get_fecha_factura, get_id_factura, get_item_factura, get_tax_info, get_client_name
 
 
 def extract_and_write(files, result_files_name: tuple[str] | str):
@@ -42,7 +42,15 @@ def extract_and_write(files, result_files_name: tuple[str] | str):
             csv_writer = csv.writer(file, delimiter=",")
 
             csv_writer.writerow(["Descripcion", "Cantidad", "Factura", "Fecha"])
+            for item in items:
+                csv_writer.writerow(item)
 
+        with open(str(f"{result_files_name}_montos"), mode="w") as file:
+            csv_writer = csv.writer(file, delimiter=",")
+
+            csv_writer.writerow(["Factura", "Fecha", "Cliente", "Base Imponible", "IGV", "Total"])
+            for factura in facturas_monto:
+                csv_writer.writerow(factura)
 
 
 def selector(action: str, file_type: str, retry: bool) -> tuple[tuple[str] | str, bool]:
