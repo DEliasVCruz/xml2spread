@@ -13,7 +13,7 @@ def extract_and_write(files, result_files_name: tuple[str] | str):
 
     with TemporaryDirectory() as tmpdirname:
 
-        items = []
+        detail_items = []
         facturas_monto = []
 
         for file in files:
@@ -38,6 +38,8 @@ def extract_and_write(files, result_files_name: tuple[str] | str):
             for item in items:
                 item.extend([id, fecha])
 
+            detail_items.extend(items)
+
         file = Path(str(result_files_name))
         file = file.parent / file.stem
         detalle_file = f"{str(file)}_detalle.csv"
@@ -47,7 +49,7 @@ def extract_and_write(files, result_files_name: tuple[str] | str):
             csv_writer = csv.writer(file, delimiter=",")
 
             csv_writer.writerow(["Descripcion", "Cantidad", "Factura", "Fecha"])
-            for item in items:
+            for item in detail_items:
                 csv_writer.writerow(item)
 
         with open(ammount_file, mode="w") as file:
